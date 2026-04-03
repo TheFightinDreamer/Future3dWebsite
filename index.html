@@ -337,6 +337,163 @@ footer{background:#040A12;color:var(--text3);padding:56px 5% 28px;border-top:1px
 .gallery-prev{left:10px;}
 .gallery-next{right:10px;}
 .prod-img-wrap{position:relative;height:300px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#080E18;}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — all breakpoints
+   ═══════════════════════════════════════════════════════ */
+
+/* Hamburger — hidden on desktop */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:1100;}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:all .3s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Mobile nav drawer */
+.mobile-nav-open .nav-links{
+  display:flex!important;flex-direction:column;position:fixed;
+  top:58px;left:0;right:0;background:rgba(7,16,30,0.98);
+  backdrop-filter:blur(20px);padding:8px 0 20px;
+  border-bottom:1px solid var(--bdr);z-index:999;gap:0;
+}
+.mobile-nav-open .nav-links li{border-bottom:1px solid var(--bdr);}
+.mobile-nav-open .nav-links a{display:block;padding:15px 6%;font-size:1rem;color:var(--text);}
+
+/* ── TABLET (≤ 880px) ─────────────────────────── */
+@media(max-width:880px){
+  /* Nav */
+  .hamburger{display:flex;}
+  .nav-links{display:none;}
+  nav{padding:14px 5%;}
+  nav.shrink{padding:10px 5%;}
+
+  /* Hero */
+  .hero{padding:90px 5% 60px;min-height:90vh;flex-direction:column;gap:24px;}
+  .hero-content{max-width:100%;}
+  .hero h1{font-size:clamp(2rem,7vw,3rem);}
+  .hero p{font-size:.95rem;max-width:100%;}
+  .hero-btns{flex-direction:row;flex-wrap:wrap;}
+
+  /* Trust bar */
+  .trust-bar{gap:18px;padding:14px 5%;}
+
+  /* Section padding */
+  section{padding:56px 5%;}
+
+  /* Products */
+  .products-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+
+  /* Modal — bottom sheet on mobile */
+  .modal-overlay{align-items:flex-end;padding:0;}
+  .modal-box{
+    grid-template-columns:1fr;
+    max-width:100%;width:100%;
+    border-radius:24px 24px 0 0;
+    max-height:92vh;
+    position:relative;
+  }
+  .modal-left{border-radius:24px 24px 0 0;padding:20px;}
+  .modal-main-img{height:220px;}
+  .modal-thumbs{justify-content:center;}
+
+  /* Cart — full width */
+  .cart-sidebar{width:min(360px,100vw);}
+
+  /* Features */
+  .features-grid{grid-template-columns:repeat(2,1fr);}
+
+  /* Process */
+  .process-grid{grid-template-columns:1fr;gap:32px;}
+  .process-videos{flex-direction:row;flex-wrap:wrap;}
+  .process-video-card{flex:1;min-width:240px;}
+
+  /* Reviews */
+  .reviews-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+
+  /* Footer */
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px;}
+  .footer-bottom{flex-direction:column;gap:8px;text-align:center;}
+
+  /* Checkout */
+  .checkout-body{grid-template-columns:1fr;padding:24px 5%;}
+  .checkout-nav{flex-wrap:wrap;gap:10px;padding:12px 5%;}
+  .checkout-steps{font-size:.72rem;gap:3px;}
+  .step-div{width:10px;}
+  .order-summary-box{position:static;}
+}
+
+/* ── PHONE (≤ 600px) ──────────────────────────── */
+@media(max-width:600px){
+  /* Nav */
+  .logo{font-size:1.1rem;}
+  .cart-btn{padding:8px 14px;font-size:.8rem;}
+
+  /* Hero */
+  .hero{padding:80px 4% 52px;}
+  .hero-badge{font-size:.72rem;padding:5px 12px;}
+  .hero h1{font-size:clamp(1.9rem,8vw,2.6rem);}
+  .hero-btns{flex-direction:column;}
+  .btn-primary,.btn-outline{width:100%;text-align:center;padding:13px 24px;}
+
+  /* Trust bar */
+  .trust-bar{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 4%;}
+  .trust-item{font-size:.78rem;}
+
+  /* Section */
+  section{padding:48px 4%;}
+  .section-title{font-size:clamp(1.6rem,6vw,2rem);}
+
+  /* Products */
+  .products-grid{grid-template-columns:1fr;}
+  .prod-img-wrap{height:260px;}
+  .prod-footer{gap:16px;}
+  .prod-actions{flex-direction:row;width:100%;}
+  .add-cart{flex:1;text-align:center;}
+  .quick-view{flex:1;text-align:center;}
+
+  /* Modal */
+  .modal-main-img{height:190px;}
+  .modal-right{padding:20px;}
+  .modal-name{font-size:1.3rem;}
+  .modal-price{font-size:1.5rem;}
+  .modal-specs{grid-template-columns:1fr 1fr;}
+  .qty-row{flex-wrap:wrap;}
+  .modal-add-cart{min-width:auto;flex:1;}
+
+  /* Cart */
+  .cart-sidebar{width:100%;}
+
+  /* Features */
+  .features-grid{grid-template-columns:1fr;}
+
+  /* Newsletter */
+  .newsletter-form{flex-direction:column;align-items:stretch;}
+  .newsletter-form input{max-width:100%;}
+  .newsletter-form button{width:100%;}
+
+  /* Footer */
+  .footer-grid{grid-template-columns:1fr;}
+  footer{padding:40px 4% 24px;}
+
+  /* Checkout form */
+  .form-row{grid-template-columns:1fr;}
+  .checkout-steps{display:none;}  /* hide steps on small phones — too cramped */
+  .checkout-nav > a, .checkout-nav > button:last-child{font-size:.8rem;padding:7px 14px;}
+
+  /* Gallery arrows — bigger tap targets */
+  .gallery-arrow{width:36px;height:36px;font-size:1.3rem;}
+  .gallery-prev{left:6px;}
+  .gallery-next{right:6px;}
+}
+
+/* ── VERY SMALL (≤ 360px) ─────────────────────── */
+@media(max-width:360px){
+  .hero h1{font-size:1.75rem;}
+  .trust-bar{grid-template-columns:1fr;}
+  .modal-specs{grid-template-columns:1fr;}
+  .prod-actions{flex-direction:column;}
+}
+
 </style>
 </head>
 <body>
@@ -345,6 +502,9 @@ footer{background:#040A12;color:var(--text3);padding:56px 5% 28px;border-top:1px
 <nav id="mainNav">
   <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="logo" style="text-decoration:none;cursor:pointer;">Future<span>3D</span></a>
   <ul class="nav-links"><li><a href="#products">Shop</a></li><li><a href="#features">About</a></li><li><a href="#process">Making Of</a></li><li><a href="#reviews">Reviews</a></li></ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
   <div class="nav-right"><button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button></div>
 </nav>
 
@@ -1207,6 +1367,21 @@ window.addEventListener('scroll', function() {
       scrollDepthTracked[pct] = true;
       if(typeof trackEvent!=='undefined') trackEvent('scroll_depth', {percent: pct});
     }
+  });
+});
+
+// ── HAMBURGER NAV ──
+function toggleMenu() {
+  var nav = document.getElementById('mainNav');
+  var btn = document.getElementById('hamburger');
+  nav.classList.toggle('mobile-nav-open');
+  btn.classList.toggle('open');
+}
+// Close menu when a nav link is clicked
+document.querySelectorAll('.nav-links a').forEach(function(link) {
+  link.addEventListener('click', function() {
+    document.getElementById('mainNav').classList.remove('mobile-nav-open');
+    document.getElementById('hamburger').classList.remove('open');
   });
 });
 
