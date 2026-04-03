@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- ===== ANALYTICS — Replace IDs below before going live ===== -->
+<!-- Google Analytics 4: replace G-XXXXXXXXXX with your Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+  // Custom events — called automatically below
+  function trackEvent(name, params) { gtag('event', name, params || {}); }
+</script>
+<!-- Microsoft Clarity (session replay, scroll maps, heatmaps): replace CLARITY_ID -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "CLARITY_ID");
+</script>
+<!-- ===== END ANALYTICS ===== -->
+
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Future3D — 3D Printed Decor & Lights · Made in India</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#07101E; --bg2:#0C1828; --bg3:#101F30;
+  --card:#0F1B2D; --card2:#142030;
+  --navy:#1B3A6B; --navy3:#254E8F;
+  --orange:#FF6B2B; --orange2:#E85520; --orange-l:#FF8A50;
+  --text:#F0F4FF; --text2:#A8B8CC; --text3:#5A7090;
+  --bdr:rgba(255,255,255,0.08); --bdr2:rgba(255,255,255,0.15);
+  --glow-orange:0 0 30px rgba(255,107,43,0.25);
+  --glow-blue:0 0 30px rgba(37,78,143,0.35);
+  --shadow:0 8px 32px rgba(0,0,0,0.5);
+  --shadow-h:0 20px 60px rgba(0,0,0,0.6);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg2);}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--navy3),var(--orange));border-radius:2px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(7,16,30,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);transition:padding .3s;}
+nav.shrink{padding:10px 5%;}
+.logo{font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:#fff;letter-spacing:-1px;}
+.logo span{color:var(--orange);}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--text2);font-size:.88rem;font-weight:500;transition:color .2s;}
+.nav-links a:hover{color:#fff;}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.cart-btn{position:relative;background:var(--orange);color:#fff;border:none;padding:9px 20px;border-radius:50px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.cart-btn:hover{background:var(--orange2);box-shadow:var(--glow-orange);}
+.cart-count{position:absolute;top:-6px;right:-6px;background:#fff;color:var(--orange);border-radius:50%;width:20px;height:20px;font-size:.65rem;font-weight:900;display:flex;align-items:center;justify-content:center;}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 5% 80px;overflow:hidden;gap:48px;}
+.hero-content{flex:1;min-width:0;}
+.hero-visual{position:relative;z-index:2;flex:0 0 380px;display:flex;flex-direction:column;gap:14px;padding-top:20px;}
+.hero-vid-card{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;border:1px solid rgba(255,107,43,0.25);box-shadow:0 8px 32px rgba(0,0,0,0.5);transition:transform .3s,box-shadow .3s;}
+.hero-vid-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(255,107,43,0.2);}
+.hero-vid-card video{width:100%;height:160px;object-fit:cover;display:block;}
+.hero-vid-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.75));padding:10px 14px;font-size:.75rem;font-weight:600;color:#fff;display:flex;align-items:center;gap:8px;}
+.hero-vid-dot{width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0;animation:pulse 1.8s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
+@media(max-width:880px){.hero-visual{display:none;}}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.hero-content{position:relative;z-index:2;max-width:600px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,43,0.12);color:var(--orange-l);border:1px solid rgba(255,107,43,0.3);padding:6px 16px;border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:24px;letter-spacing:.5px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,5vw,3.8rem);line-height:1.15;color:#fff;margin-bottom:20px;}
+.hero h1 em{font-style:italic;color:var(--orange);}
+.hero p{font-size:1.05rem;color:var(--text2);margin-bottom:36px;max-width:480px;line-height:1.8;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-primary{background:var(--orange);color:#fff;padding:14px 32px;border-radius:50px;font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:var(--glow-orange);}
+.btn-outline{background:transparent;color:#fff;padding:14px 32px;border-radius:50px;font-weight:600;font-size:.95rem;border:1px solid rgba(255,255,255,0.25);cursor:pointer;transition:all .25s;text-decoration:none;display:inline-block;}
+.btn-outline:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.5);}
+
+/* TRUST BAR */
+.trust-bar{background:rgba(255,107,43,0.08);border-top:1px solid rgba(255,107,43,0.15);border-bottom:1px solid rgba(255,107,43,0.15);padding:18px 5%;display:flex;justify-content:center;gap:50px;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:10px;color:var(--text2);font-size:.82rem;font-weight:500;}
+.trust-icon{width:30px;height:30px;background:rgba(255,107,43,0.12);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+
+/* TESTIMONIALS MARQUEE */
+.marquee-section{background:var(--bg2);border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);padding:16px 0;overflow:hidden;position:relative;}
+.marquee-section::before,.marquee-section::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none;}
+.marquee-section::before{left:0;background:linear-gradient(90deg,var(--bg2),transparent);}
+.marquee-section::after{right:0;background:linear-gradient(-90deg,var(--bg2),transparent);}
+.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite;width:max-content;}
+.marquee-track:hover{animation-play-state:paused;}
+.marquee-item{display:flex;align-items:center;gap:10px;padding:8px 32px;border-right:1px solid var(--bdr);white-space:nowrap;}
+.mq-stars{color:#F59E0B;font-size:.8rem;letter-spacing:1px;}
+.mq-text{font-size:.82rem;color:var(--text2);max-width:240px;overflow:hidden;text-overflow:ellipsis;}
+.mq-author{font-size:.78rem;font-weight:700;color:var(--text);white-space:nowrap;}
+.mq-city{font-size:.72rem;color:var(--text3);}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* SECTION COMMONS */
+section{padding:80px 5%;}
+.section-label{font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);color:#fff;margin-bottom:16px;line-height:1.3;}
+.section-sub{color:var(--text2);font-size:.95rem;max-width:500px;line-height:1.8;}
+
+/* PRODUCTS */
+.products{background:var(--bg2);background-image:
+  linear-gradient(rgba(37,78,143,0.08) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(37,78,143,0.08) 1px,transparent 1px);
+  background-size:50px 50px;}
+.products-header{text-align:center;margin-bottom:56px;}
+.products-header .section-sub{margin:0 auto;}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;max-width:1100px;margin:0 auto;}
+
+/* PRODUCT CARD */
+.prod-card{background:var(--card);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:all .35s;cursor:pointer;border:1px solid var(--bdr);position:relative;}
+.prod-card:hover{box-shadow:var(--shadow-h),0 0 40px rgba(37,78,143,0.2);transform:translateY(-8px);border-color:rgba(37,78,143,0.4);}
+.prod-img-wrap{position:relative;height:300px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#080E18;}
+.prod-img-slot{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:opacity .35s;}
+.prod-img-slot svg{max-height:280px;width:auto;padding:16px;}
+.prod-card:hover .prod-img-slot svg{transform:scale(1.04);transition:transform .4s;}
+/* Video overlay on hover */
+.prod-video{position:absolute;inset:0;object-fit:cover;opacity:0;transition:opacity .5s;pointer-events:none;z-index:1;}
+.prod-card:hover .prod-video{opacity:0.85;}
+.prod-badge{position:absolute;top:14px;left:14px;background:var(--orange);color:#fff;padding:4px 12px;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.5px;z-index:2;}
+.prod-badge.navy{background:var(--navy3);}
+.img-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;}
+.img-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:all .2s;}
+.img-dot.active{background:#fff;width:20px;border-radius:4px;}
+.prod-info{padding:22px;}
+.prod-category{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;}
+.prod-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;color:#fff;margin-bottom:8px;}
+.prod-desc{font-size:.84rem;color:var(--text2);line-height:1.65;margin-bottom:18px;}
+.prod-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.prod-price{display:flex;flex-direction:column;}
+.price-now{font-size:1.4rem;font-weight:800;color:#fff;}
+.price-mrp{font-size:.78rem;color:var(--text3);text-decoration:line-through;}
+.price-save{font-size:.72rem;color:#4ADE80;font-weight:700;}
+.prod-actions{display:flex;flex-direction:column;gap:8px;}
+.add-cart{background:var(--orange);color:#fff;border:none;padding:10px 22px;border-radius:50px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .25s;}
+.add-cart:hover{background:var(--orange2);box-shadow:var(--glow-orange);}
+.quick-view{background:transparent;color:var(--text2);border:1px solid var(--bdr2);padding:9px 16px;border-radius:50px;font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.quick-view:hover{border-color:#fff;color:#fff;}
+
+/* QUICK VIEW MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--card2);border:1px solid var(--bdr2);border-radius:24px;max-width:920px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;position:relative;box-shadow:0 40px 80px rgba(0,0,0,0.6);}
+.modal-left{background:#080E18;border-radius:24px 0 0 24px;padding:32px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+.modal-main-img{width:100%;height:280px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border-radius:12px;}
+.modal-main-img svg{max-height:260px;width:auto;}
+.modal-main-video{position:absolute;inset:0;object-fit:cover;width:100%;height:100%;border-radius:12px;}
+.modal-tabs{display:flex;gap:8px;margin-bottom:8px;}
+.modal-tab{padding:6px 14px;border-radius:50px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--bdr2);color:var(--text2);background:transparent;transition:all .2s;}
+.modal-tab.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+.modal-thumbs{display:flex;gap:10px;}
+.modal-thumb{width:68px;height:68px;border-radius:10px;background:rgba(255,255,255,0.04);border:1.5px solid var(--bdr);cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6px;transition:border-color .2s;}
+.modal-thumb.active{border-color:var(--orange);}
+.modal-thumb svg,.modal-thumb video{width:100%;height:100%;object-fit:contain;}
+.modal-close{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);color:#fff;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .2s;}
+.modal-close:hover{background:rgba(255,255,255,0.15);}
+.modal-right{padding:36px;overflow-y:auto;}
+.modal-cat{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:8px;}
+.modal-name{font-family:'Playfair Display',serif;font-size:1.65rem;color:#fff;margin-bottom:12px;line-height:1.25;}
+.modal-stars{display:flex;align-items:center;gap:8px;margin-bottom:16px;color:#F59E0B;font-size:.85rem;}
+.modal-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.modal-price{font-size:1.9rem;font-weight:800;color:#fff;}
+.modal-mrp{font-size:1rem;color:var(--text3);text-decoration:line-through;}
+.modal-save{background:rgba(74,222,128,0.15);color:#4ADE80;padding:3px 10px;border-radius:50px;font-size:.78rem;font-weight:700;border:1px solid rgba(74,222,128,0.2);}
+.modal-desc{font-size:.88rem;color:var(--text2);line-height:1.8;margin-bottom:22px;}
+.modal-specs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px;}
+.spec-item{background:rgba(255,255,255,0.04);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;}
+.spec-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px;}
+.spec-val{font-size:.88rem;font-weight:600;color:#fff;}
+.qty-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;}
+.qty-ctrl{display:flex;align-items:center;border:1px solid var(--bdr2);border-radius:50px;overflow:hidden;}
+.qty-btn{width:36px;height:36px;border:none;background:transparent;color:#fff;cursor:pointer;font-size:1.1rem;transition:background .2s;}
+.qty-btn:hover{background:rgba(255,255,255,0.08);}
+.qty-num{width:38px;text-align:center;font-weight:700;color:#fff;font-size:.9rem;}
+.modal-add-cart{flex:1;min-width:140px;background:var(--orange);color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .25s;}
+.modal-add-cart:hover{background:var(--orange2);box-shadow:var(--glow-orange);}
+.modal-wishlist{width:42px;height:42px;border:1px solid var(--bdr2);border-radius:50%;background:transparent;cursor:pointer;font-size:1.2rem;color:var(--text2);transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.modal-wishlist:hover{border-color:var(--orange);color:var(--orange);}
+
+/* CART SIDEBAR */
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:2999;}
+.cart-overlay.open{display:block;}
+.cart-sidebar{position:fixed;right:0;top:0;bottom:0;width:360px;background:var(--card2);border-left:1px solid var(--bdr2);z-index:3000;box-shadow:-12px 0 50px rgba(0,0,0,0.5);transform:translateX(100%);transition:transform .35s ease;display:flex;flex-direction:column;}
+.cart-sidebar.open{transform:translateX(0);}
+.cart-header{padding:22px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;}
+.cart-header h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:#fff;}
+.cart-close{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid var(--bdr);cursor:pointer;color:#fff;font-size:.9rem;}
+.cart-items{flex:1;overflow-y:auto;padding:16px;}
+.cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--bdr);}
+.cart-item-img{width:68px;height:68px;border-radius:10px;background:#080E18;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.cart-item-img svg{width:60px;height:60px;}
+.cart-item-name{font-weight:600;font-size:.88rem;color:#fff;margin-bottom:4px;}
+.cart-item-price{font-size:.85rem;color:var(--orange);font-weight:700;}
+.cart-item-qty{font-size:.78rem;color:var(--text3);margin-top:4px;}
+.cart-footer{padding:18px;border-top:1px solid var(--bdr);}
+.cart-total-row{display:flex;justify-content:space-between;font-size:1rem;font-weight:800;color:#fff;margin-bottom:14px;}
+.checkout-btn{width:100%;background:var(--orange);color:#fff;border:none;padding:14px;border-radius:50px;font-weight:800;font-size:.95rem;cursor:pointer;transition:all .25s;}
+.checkout-btn:hover{background:var(--orange2);box-shadow:var(--glow-orange);}
+
+/* FEATURES */
+.features{background:var(--bg);}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:48px;}
+.feat-card{background:var(--card2);border:1px solid var(--bdr);border-radius:16px;padding:28px;transition:all .3s;}
+.feat-card:hover{border-color:rgba(37,78,143,0.5);box-shadow:var(--glow-blue);transform:translateY(-4px);}
+.feat-icon{width:48px;height:48px;background:rgba(255,107,43,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:16px;border:1px solid rgba(255,107,43,0.15);}
+.feat-title{font-weight:700;font-size:.95rem;color:#fff;margin-bottom:8px;}
+.feat-desc{font-size:.83rem;color:var(--text2);line-height:1.65;}
+
+/* PROCESS + VIDEOS */
+.process{background:var(--bg2);background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='28' stroke='%23254E8F' stroke-opacity='0.07' stroke-width='1' fill='none'/%3E%3Ccircle cx='30' cy='30' r='16' stroke='%23254E8F' stroke-opacity='0.05' stroke-width='1' fill='none'/%3E%3C/g%3E%3C/svg%3E");background-size:60px 60px;}
+.process-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:48px;}
+.steps-list{display:flex;flex-direction:column;gap:24px;}
+.step-item{display:flex;gap:18px;align-items:flex-start;}
+.step-circle{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--navy3),#1B3A6B);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:.9rem;flex-shrink:0;box-shadow:0 4px 16px rgba(37,78,143,0.35);}
+.step-content h4{font-weight:700;color:#fff;margin-bottom:4px;}
+.step-content p{font-size:.84rem;color:var(--text2);line-height:1.65;}
+.process-videos{display:flex;flex-direction:column;gap:16px;}
+.process-video-card{border-radius:16px;overflow:hidden;position:relative;cursor:pointer;border:1px solid var(--bdr);}
+.process-video-card video{width:100%;height:180px;object-fit:cover;display:block;}
+.process-video-card .play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);opacity:0;transition:opacity .25s;}
+.process-video-card:hover .play-overlay{opacity:1;}
+.play-btn{width:52px;height:52px;border-radius:50%;background:rgba(255,107,43,0.9);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.2rem;border:2px solid rgba(255,255,255,0.3);}
+.video-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.7));padding:12px 14px;font-size:.78rem;font-weight:600;color:#fff;}
+
+/* SOCIAL PROOF / REVIEWS */
+.reviews-section{background:var(--bg);}
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin-top:48px;}
+.review-card{background:var(--card2);border:1px solid var(--bdr);border-radius:16px;padding:24px;transition:all .25s;}
+.review-card:hover{border-color:rgba(245,158,11,0.3);transform:translateY(-4px);}
+.review-stars{color:#F59E0B;font-size:.88rem;margin-bottom:10px;letter-spacing:2px;}
+.review-text{color:var(--text2);font-size:.86rem;line-height:1.75;margin-bottom:16px;font-style:italic;}
+.reviewer{display:flex;align-items:center;gap:12px;}
+.reviewer-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--orange2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:.88rem;flex-shrink:0;}
+.reviewer-name{font-weight:700;color:#fff;font-size:.85rem;}
+.reviewer-city{font-size:.74rem;color:var(--text3);}
+
+/* NEWSLETTER */
+.newsletter{background:var(--bg2);text-align:center;background-image:linear-gradient(rgba(255,107,43,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,43,0.04) 1px,transparent 1px);background-size:40px 40px;}
+.newsletter-box{max-width:560px;margin:0 auto;}
+.newsletter h2{font-family:'Playfair Display',serif;font-size:1.9rem;color:#fff;margin-bottom:12px;}
+.newsletter p{color:var(--text2);margin-bottom:28px;}
+.newsletter-form{display:flex;gap:12px;justify-content:center;}
+.newsletter-form input{flex:1;max-width:300px;padding:12px 20px;border:1px solid var(--bdr2);border-radius:50px;font-size:.9rem;outline:none;background:rgba(255,255,255,0.05);color:#fff;font-family:'Inter',sans-serif;}
+.newsletter-form input::placeholder{color:var(--text3);}
+.newsletter-form input:focus{border-color:var(--orange);}
+.newsletter-form button{background:var(--orange);color:#fff;padding:12px 26px;border-radius:50px;border:none;font-weight:700;cursor:pointer;transition:all .2s;}
+.newsletter-form button:hover{background:var(--orange2);}
+
+/* FOOTER */
+footer{background:#040A12;color:var(--text3);padding:56px 5% 28px;border-top:1px solid var(--bdr);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px;}
+.footer-brand{font-family:'Space Mono',monospace;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:12px;}
+.footer-brand span{color:var(--orange);}
+.footer-tagline{font-size:.83rem;line-height:1.75;margin-bottom:18px;}
+.footer-col h4{font-size:.78rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:14px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-col a{text-decoration:none;color:var(--text3);font-size:.83rem;transition:color .2s;}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{border-top:1px solid var(--bdr);padding-top:22px;display:flex;justify-content:space-between;font-size:.78rem;}
+
+/* CHECKOUT PAGE */
+.checkout-page{display:none;position:fixed;inset:0;z-index:4000;background:var(--bg);overflow-y:auto;}
+.checkout-page.open{display:block;}
+.checkout-nav{background:var(--bg2);padding:14px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr);}
+.checkout-steps{display:flex;gap:6px;align-items:center;font-size:.8rem;}
+.step{display:flex;align-items:center;gap:6px;color:var(--text3);font-weight:500;}
+.step.active{color:#fff;font-weight:700;}
+.step.done{color:#4ADE80;}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--bdr);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;}
+.step.active .step-num{background:var(--orange);color:#fff;}
+.step.done .step-num{background:#4ADE80;color:#000;}
+.step-div{width:20px;height:1px;background:var(--bdr);}
+.checkout-body{max-width:1000px;margin:0 auto;padding:36px 5%;display:grid;grid-template-columns:1fr 380px;gap:36px;}
+.checkout-form-section h3{font-family:'Playfair Display',serif;font-size:1.25rem;color:#fff;margin-bottom:18px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.form-row.full{grid-template-columns:1fr;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:.78rem;font-weight:600;color:var(--text2);}
+.form-group input,.form-group select{padding:11px 16px;border:1px solid var(--bdr2);border-radius:10px;font-size:.88rem;font-family:'Inter',sans-serif;outline:none;transition:border-color .2s;background:var(--card);color:#fff;}
+.form-group input:focus,.form-group select:focus{border-color:var(--orange);}
+.form-group select option{background:var(--card2);color:#fff;}
+.payment-methods{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.pay-option{border:1px solid var(--bdr2);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px;background:var(--card);}
+.pay-option.selected{border-color:var(--orange);background:rgba(255,107,43,0.06);}
+.pay-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--bdr2);flex-shrink:0;}
+.pay-option.selected .pay-radio{border-color:var(--orange);}
+.pay-option.selected .pay-radio::after{content:'';width:9px;height:9px;border-radius:50%;background:var(--orange);display:block;margin:2.5px;}
+.pay-label{font-weight:600;font-size:.86rem;color:#fff;}
+.pay-sub{font-size:.73rem;color:var(--text3);margin-top:2px;}
+.pay-icons{margin-left:auto;display:flex;gap:5px;}
+.pay-icon{padding:3px 7px;border-radius:4px;background:rgba(255,255,255,0.06);font-size:.62rem;font-weight:700;color:var(--text2);}
+.upi-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.upi-app{background:rgba(255,255,255,0.05);border:1px solid var(--bdr2);border-radius:8px;padding:6px 12px;font-size:.76rem;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text2);}
+.upi-app:hover,.upi-app.sel{border-color:var(--orange);background:rgba(255,107,43,0.1);color:var(--orange);}
+.order-summary-box{background:var(--card2);border:1px solid var(--bdr2);border-radius:20px;padding:26px;position:sticky;top:20px;}
+.order-summary-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;margin-bottom:18px;}
+.order-item{display:flex;gap:12px;margin-bottom:14px;align-items:flex-start;}
+.order-item-img{width:58px;height:58px;border-radius:10px;background:#080E18;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.order-item-img svg{width:50px;height:50px;}
+.order-item-name{font-size:.86rem;font-weight:600;color:#fff;}
+.order-item-var{font-size:.74rem;color:var(--text3);margin-top:2px;}
+.order-item-price{font-size:.88rem;font-weight:700;color:#fff;margin-left:auto;white-space:nowrap;}
+.order-divider{border:none;border-top:1px solid var(--bdr);margin:14px 0;}
+.order-line{display:flex;justify-content:space-between;font-size:.86rem;color:var(--text2);margin-bottom:8px;}
+.order-line.total{font-size:.98rem;font-weight:800;color:#fff;}
+.order-line.green{color:#4ADE80;font-weight:600;}
+.place-order-btn{width:100%;background:var(--orange);color:#fff;border:none;padding:14px;border-radius:50px;font-weight:800;font-size:.98rem;cursor:pointer;transition:all .25s;margin-top:18px;}
+.place-order-btn:hover{background:var(--orange2);box-shadow:var(--glow-orange);}
+.secure-badge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:.72rem;color:var(--text3);}
+
+/* SUCCESS */
+.success-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:5000;align-items:center;justify-content:center;}
+.success-overlay.open{display:flex;}
+.success-box{background:var(--card2);border:1px solid var(--bdr2);border-radius:24px;padding:48px;text-align:center;max-width:400px;animation:popIn .4s ease;}
+@keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+.success-icon{font-size:3rem;margin-bottom:16px;}
+.success-box h2{font-family:'Playfair Display',serif;font-size:1.5rem;color:#fff;margin-bottom:10px;}
+.success-box p{color:var(--text2);font-size:.88rem;line-height:1.7;margin-bottom:22px;}
+.success-btn{background:var(--orange);color:#fff;padding:12px 32px;border-radius:50px;border:none;font-weight:700;cursor:pointer;font-size:.95rem;}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.card-tilt{transform-style:preserve-3d;transition:transform .15s ease;}
+
+/* GALLERY ARROWS */
+.gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;background:rgba(0,0,0,0.55);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:50%;width:38px;height:38px;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;line-height:1;padding:0;}
+.gallery-arrow:hover{background:rgba(255,107,43,0.8);}
+.gallery-prev{left:10px;}
+.gallery-next{right:10px;}
+.prod-img-wrap{position:relative;height:300px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#080E18;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="logo" style="text-decoration:none;cursor:pointer;">Future<span>3D</span></a>
+  <ul class="nav-links"><li><a href="#products">Shop</a></li><li><a href="#features">About</a></li><li><a href="#process">Making Of</a></li><li><a href="#reviews">Reviews</a></li></ul>
+  <div class="nav-right"><button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-content reveal">
+    <div class="hero-badge">⬡ 3D Printed · Hand-Finished · Made in India</div>
+    <h1>Objects that<br/><em>glow different</em></h1>
+    <p>Every Future3D product is precision-printed layer by layer on our Bambu Lab studio printer, then hand-finished for a finish you can feel.</p>
+    <div class="hero-btns"><a href="#products" class="btn-primary">Shop Collection →</a><a href="#process" class="btn-outline">Watch Us Print</a></div>
+  </div>
+  <!-- HERO RIGHT: Product preview videos -->
+  <div class="hero-visual">
+    <div class="hero-vid-card" onclick="openModal('lamp')">
+      <video src="lamp.mp4" muted loop autoplay playsinline style="object-position:center 65%;"></video>
+      <div class="hero-vid-label"><span class="hero-vid-dot"></span>GlowBot Buddy™ — warm amber glow</div>
+    </div>
+    <div class="hero-vid-card" onclick="openModal('lantern')">
+      <video src="lantern.mp4" muted loop autoplay playsinline style="object-position:center 50%;"></video>
+      <div class="hero-vid-label"><span class="hero-vid-dot" style="background:#FFB300;"></span>PixelFlame Lantern™ — pixel fire</div>
+    </div>
+    <div class="hero-vid-card" onclick="openModal('cactus')">
+      <video src="cactus.mp4" muted loop autoplay playsinline style="object-position:center 35%;"></video>
+      <div class="hero-vid-label"><span class="hero-vid-dot" style="background:#4CAF50;"></span>CactuStation™ — desk organizer</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-icon">🚀</div>Free shipping above ₹999</div>
+  <div class="trust-item"><div class="trust-icon">🔄</div>7-day returns</div>
+  <div class="trust-item"><div class="trust-icon">🎨</div>Custom colors</div>
+  <div class="trust-item"><div class="trust-icon">🇮🇳</div>Made in India</div>
+  <div class="trust-item"><div class="trust-icon">⚡</div>Ships in 3–5 days</div>
+</div>
+
+<!-- TESTIMONIALS MARQUEE -->
+
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack">
+    <!-- set 1 -->
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"GlowBot is the best thing on my study table. Everyone asks about it!"</div></div><div style="margin-left:10px;"><div class="mq-author">Arjun M.</div><div class="mq-city">Bangalore · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"PixelFlame Lantern gives the perfect gaming room vibe. 10/10 mood lamp!"</div></div><div style="margin-left:10px;"><div class="mq-author">Priya S.</div><div class="mq-city">Delhi · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Cactus organizer is insane — holds my headphones, watch, and AirPods perfectly."</div></div><div style="margin-left:10px;"><div class="mq-author">Rohan T.</div><div class="mq-city">Pune · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★☆</div><div class="mq-text">"Packaging was immaculate. Arrived in perfect condition, looks premium."</div></div><div style="margin-left:10px;"><div class="mq-author">Sneha R.</div><div class="mq-city">Mumbai · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Gifted GlowBot Buddy to my nephew — he refuses to sleep without it now 😂"</div></div><div style="margin-left:10px;"><div class="mq-author">Vikram P.</div><div class="mq-city">Hyderabad · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"The quality is unreal for the price. Matte finish feels super premium."</div></div><div style="margin-left:10px;"><div class="mq-author">Divya K.</div><div class="mq-city">Chennai · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Finally a desk organizer that actually looks cool. Cactus is so unique!"</div></div><div style="margin-left:10px;"><div class="mq-author">Aakash J.</div><div class="mq-city">Gurgaon · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Ordered custom orange GlowBot — color matching was spot on. Will order more!"</div></div><div style="margin-left:10px;"><div class="mq-author">Meera V.</div><div class="mq-city">Jaipur · Verified</div></div></div>
+    <!-- set 2 (duplicate for infinite) -->
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"GlowBot is the best thing on my study table. Everyone asks about it!"</div></div><div style="margin-left:10px;"><div class="mq-author">Arjun M.</div><div class="mq-city">Bangalore · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"PixelFlame Lantern gives the perfect gaming room vibe. 10/10 mood lamp!"</div></div><div style="margin-left:10px;"><div class="mq-author">Priya S.</div><div class="mq-city">Delhi · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Cactus organizer is insane — holds my headphones, watch, and AirPods perfectly."</div></div><div style="margin-left:10px;"><div class="mq-author">Rohan T.</div><div class="mq-city">Pune · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★☆</div><div class="mq-text">"Packaging was immaculate. Arrived in perfect condition, looks premium."</div></div><div style="margin-left:10px;"><div class="mq-author">Sneha R.</div><div class="mq-city">Mumbai · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Gifted GlowBot Buddy to my nephew — he refuses to sleep without it now 😂"</div></div><div style="margin-left:10px;"><div class="mq-author">Vikram P.</div><div class="mq-city">Hyderabad · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"The quality is unreal for the price. Matte finish feels super premium."</div></div><div style="margin-left:10px;"><div class="mq-author">Divya K.</div><div class="mq-city">Chennai · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Finally a desk organizer that actually looks cool. Cactus is so unique!"</div></div><div style="margin-left:10px;"><div class="mq-author">Aakash J.</div><div class="mq-city">Gurgaon · Verified</div></div></div>
+    <div class="marquee-item"><div><div class="mq-stars">★★★★★</div><div class="mq-text">"Ordered custom orange GlowBot — color matching was spot on. Will order more!"</div></div><div style="margin-left:10px;"><div class="mq-author">Meera V.</div><div class="mq-city">Jaipur · Verified</div></div></div>
+  </div>
+</div>
+
+
+<!-- PRODUCTS -->
+<section class="products" id="products">
+  <div class="products-header reveal">
+    <div class="section-label">Our Collection</div>
+    <div class="section-title">3D Originals — Only 3 Products</div>
+    <p class="section-sub">Each piece is printed-to-order. Hover to watch it being made.</p>
+  </div>
+  <div class="products-grid">
+
+    <!-- PRODUCT 1: GlowBot Buddy -->
+    <div class="prod-card card-tilt reveal" onclick="openModal('lamp')">
+      <div class="prod-img-wrap" id="gallery-lamp">
+        <img src="lamp_1.jpg" alt="Front View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+        <img src="lamp_2.jpg" alt="Ambient Glow" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <img src="lamp_3.jpg" alt="Side View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <img src="lamp_4.jpg" alt="Close-up" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <img src="lamp_5.jpg" alt="Desk Setup" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <button class="gallery-arrow gallery-prev" onclick="galleryCycle('lamp',-1);event.stopPropagation()">&#8249;</button>
+        <button class="gallery-arrow gallery-next" onclick="galleryCycle('lamp',1);event.stopPropagation()">&#8250;</button>
+        <div class="img-dots"><div class="img-dot active" onclick="switchGallery('lamp',0);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lamp',1);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lamp',2);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lamp',3);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lamp',4);event.stopPropagation()"></div></div>
+        <video class="prod-video" autoplay muted loop playsinline src="lamp.mp4" style="object-position:center 65%;"></video>
+        <div class="prod-badge">BESTSELLER</div>
+        <div class="img-dots" id="dots-lamp">
+          <div class="img-dot active" onclick="switchImg(event,'lamp',0)"></div>
+          <div class="img-dot" onclick="switchImg(event,'lamp',1)"></div>
+          <div class="img-dot" onclick="switchImg(event,'lamp',2)"></div>
+        </div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-category">3D Character Lamp</div>
+        <div class="prod-name">GlowBot Buddy™</div>
+        <div class="prod-desc">Cute seated character lamp — lime-green velvet PLA+ finish, warm LED amber glow. Perfect for desk, bedside, or shelf.</div>
+        <div class="prod-footer">
+          <div class="prod-price"><span class="price-now">₹899</span><span class="price-mrp">₹1,299</span><span class="price-save">31% off · Save ₹400</span></div>
+          <div class="prod-actions">
+            <button class="add-cart" onclick="addToCart(event,'lamp')">Add to Cart</button>
+            <button class="quick-view" onclick="openModal('lamp');event.stopPropagation()">Quick View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 2: PixelFlame Lantern -->
+    <div class="prod-card card-tilt reveal" onclick="openModal('lantern')" style="border-color:rgba(255,140,0,0.15);">
+      <div class="prod-img-wrap" style="" id="gallery-lantern">
+        <img src="lantern_1.jpg" alt="Front View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+        <img src="lantern_2.jpg" alt="Glow Mode" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <img src="lantern_3.jpg" alt="Side View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <button class="gallery-arrow gallery-prev" onclick="galleryCycle('lantern',-1);event.stopPropagation()">&#8249;</button>
+        <button class="gallery-arrow gallery-next" onclick="galleryCycle('lantern',1);event.stopPropagation()">&#8250;</button>
+        <div class="img-dots"><div class="img-dot active" onclick="switchGallery('lantern',0);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lantern',1);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('lantern',2);event.stopPropagation()"></div></div>
+        <video class="prod-video" autoplay muted loop playsinline src="lantern.mp4" style="object-position:center 40%;"></video>
+        <div class="prod-badge" style="background:#CC8800;">NEW DROP</div>
+        <div class="img-dots" id="dots-lantern">
+          <div class="img-dot active" onclick="switchImg(event,'lantern',0)"></div>
+          <div class="img-dot" onclick="switchImg(event,'lantern',1)"></div>
+          <div class="img-dot" onclick="switchImg(event,'lantern',2)"></div>
+        </div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-category">3D Pixel Lantern</div>
+        <div class="prod-name">PixelFlame Lantern™</div>
+        <div class="prod-desc">Minecraft-inspired voxel cube lantern. Espresso-dark frame, pixel grid panels, molten amber LED glow. Gaming room staple.</div>
+        <div class="prod-footer">
+          <div class="prod-price"><span class="price-now">₹1,199</span><span class="price-mrp">₹1,599</span><span class="price-save">25% off · Save ₹400</span></div>
+          <div class="prod-actions">
+            <button class="add-cart" onclick="addToCart(event,'lantern')">Add to Cart</button>
+            <button class="quick-view" onclick="openModal('lantern');event.stopPropagation()">Quick View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT 3: Cactus Organizer -->
+    <div class="prod-card card-tilt reveal" onclick="openModal('cactus')">
+      <div class="prod-img-wrap" style="background:#0A0E0A;" id="gallery-cactus">
+        <img src="cactus_1.jpg" alt="Front View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none'">
+        <img src="cactus_2.jpg" alt="Side View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <img src="cactus_3.jpg" alt="Top View" class="gallery-img" style="width:100%;height:100%;object-fit:cover;display:none;" onerror="this.style.display='none'">
+        <button class="gallery-arrow gallery-prev" onclick="galleryCycle('cactus',-1);event.stopPropagation()">&#8249;</button>
+        <button class="gallery-arrow gallery-next" onclick="galleryCycle('cactus',1);event.stopPropagation()">&#8250;</button>
+        <div class="img-dots"><div class="img-dot active" onclick="switchGallery('cactus',0);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('cactus',1);event.stopPropagation()"></div><div class="img-dot " onclick="switchGallery('cactus',2);event.stopPropagation()"></div></div>
+        <video class="prod-video" autoplay muted loop playsinline src="cactus.mp4" style="object-position:center 30%;"></video>
+        <div class="prod-badge navy">LIMITED</div>
+        <div class="img-dots" id="dots-cactus">
+          <div class="img-dot active" onclick="switchImg(event,'cactus',0)"></div>
+          <div class="img-dot" onclick="switchImg(event,'cactus',1)"></div>
+        </div>
+      </div>
+      <div class="prod-info">
+        <div class="prod-category">3D Desk Organizer</div>
+        <div class="prod-name">CactuStation™</div>
+        <div class="prod-desc">All-in-one ribbed cactus desk hub — headphone hook, smartwatch stand, and AirPods tray. Dark forest green + sandy base.</div>
+        <div class="prod-footer">
+          <div class="prod-price"><span class="price-now">₹1,099</span><span class="price-mrp">₹1,499</span><span class="price-save">27% off · Save ₹400</span></div>
+          <div class="prod-actions">
+            <button class="add-cart" onclick="addToCart(event,'cactus')">Add to Cart</button>
+            <button class="quick-view" onclick="openModal('cactus');event.stopPropagation()">Quick View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modalBox">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-left" id="modalLeft">
+      <div class="modal-tabs" id="modalTabs">
+        <button class="modal-tab active" onclick="switchModalTab('img',this)">Photos</button>
+        <button class="modal-tab" onclick="switchModalTab('vid',this)">▶ Making Of</button>
+      </div>
+      <div class="modal-main-img" id="modalMainImg"></div>
+      <div class="modal-thumbs" id="modalThumbs"></div>
+    </div>
+    <div class="modal-right" id="modalRight"></div>
+  </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><h3>Your Cart 🛒</h3><button class="cart-close" onclick="closeCart()">✕</button></div>
+  <div class="cart-items" id="cartItemsEl"><p style="text-align:center;color:var(--text3);font-size:.88rem;padding:40px 16px;">Cart is empty.<br/>Add something beautiful ✨</p></div>
+  <div class="cart-footer">
+    <div class="cart-total-row"><span>Total</span><span id="cartTotalEl">₹0</span></div>
+    <button class="checkout-btn" onclick="openCheckout()">Checkout →</button>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label reveal">Why Future3D</div>
+    <div class="section-title reveal">Built different. Printed better.</div>
+    <div class="features-grid">
+      <div class="feat-card reveal"><div class="feat-icon">🎨</div><div class="feat-title">Custom Color Orders</div><div class="feat-desc">Request any color. We print-to-order in your shade within 5–7 days.</div></div>
+      <div class="feat-card reveal"><div class="feat-icon">🔬</div><div class="feat-title">PLA+ Material</div><div class="feat-desc">Biodegradable, food-safe PLA+. Lightweight, durable, zero toxic off-gassing.</div></div>
+      <div class="feat-card reveal"><div class="feat-icon">🇮🇳</div><div class="feat-title">Noida Studio</div><div class="feat-desc">Every piece is printed, assembled, and shipped from our Noida studio.</div></div>
+      <div class="feat-card reveal"><div class="feat-icon">📦</div><div class="feat-title">Eco Packaging</div><div class="feat-desc">Ships in recycled kraft paper. The product is eco — so is the box.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS + VIDEOS -->
+<section class="process" id="process">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label reveal">Behind the Scenes</div>
+    <div class="section-title reveal">Watch it being printed</div>
+    <div class="process-grid">
+      <div class="steps-list">
+        <div class="step-item reveal"><div class="step-circle">01</div><div class="step-content"><h4>CAD Design</h4><p>Every product starts as a 3D model — stress-tested for structure and aesthetics before a single gram of filament is used.</p></div></div>
+        <div class="step-item reveal"><div class="step-circle">02</div><div class="step-content"><h4>Slice & Print</h4><p>Sliced at 0.2mm layers on our Bambu Lab P2S. Multi-color AMS system lets us print complex color combos in one run.</p></div></div>
+        <div class="step-item reveal"><div class="step-circle">03</div><div class="step-content"><h4>Hand Finish</h4><p>Removed from the build plate, support-cleaned, sanded, and quality-checked by hand in our Noida studio.</p></div></div>
+        <div class="step-item reveal"><div class="step-circle">04</div><div class="step-content"><h4>Ship to You</h4><p>Wrapped in recycled kraft, dispatched via Shiprocket. Tracked and insured to your door.</p></div></div>
+      </div>
+      <div class="process-videos reveal">
+        <div class="process-video-card">
+          <video src="lamp.mp4" muted loop autoplay playsinline></video>
+          <div class="play-overlay"><div class="play-btn">▶</div></div>
+          <div class="video-label">🟢 GlowBot Buddy — printing in progress</div>
+        </div>
+        <div class="process-video-card">
+          <video src="lantern.mp4" muted loop autoplay playsinline></video>
+          <div class="play-overlay"><div class="play-btn">▶</div></div>
+          <div class="video-label">🟡 PixelFlame Lantern — fresh off the bed</div>
+        </div>
+        <div class="process-video-card">
+          <video src="cactus.mp4" muted loop autoplay playsinline></video>
+          <div class="play-overlay"><div class="play-btn">▶</div></div>
+          <div class="video-label">⬛ CactuStation — support removal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section" id="reviews">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-label reveal">Customer Love</div>
+    <div class="section-title reveal">Real buyers. Real reviews.</div>
+    <div class="reviews-grid">
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><div class="review-text">"The GlowBot sits on my study desk and literally everyone who visits asks where I got it. The lime green matte finish is insane."</div><div class="reviewer"><div class="reviewer-avatar">A</div><div><div class="reviewer-name">Arjun M.</div><div class="reviewer-city">Bangalore · Verified buyer</div></div></div></div>
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><div class="review-text">"PixelFlame Lantern is exactly what I wanted for my gaming setup. Warm glow, pixel detail is super crisp, perfect size."</div><div class="reviewer"><div class="reviewer-avatar">P</div><div><div class="reviewer-name">Priya S.</div><div class="reviewer-city">Delhi · Verified buyer</div></div></div></div>
+      <div class="review-card reveal"><div class="review-stars">★★★★★</div><div class="review-text">"CactuStation holds my Sony headphones, Apple Watch AND AirPods. Bought it as a desk upgrade — it's a full vibe shift."</div><div class="reviewer"><div class="reviewer-avatar">R</div><div><div class="reviewer-name">Rohan T.</div><div class="reviewer-city">Pune · Verified buyer</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-box reveal">
+    <div class="section-label" style="text-align:center;">Early Access</div>
+    <h2>New drops every month</h2>
+    <p>Subscribers get 10% off launch pricing and first dibs on limited runs.</p>
+    <div class="newsletter-form"><input type="email" placeholder="your@email.com"/><button>Subscribe →</button></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><div class="footer-brand">Future<span>3D</span></div><div class="footer-tagline">Precision 3D-printed decor & lights.<br/>Printed in Noida, India.</div><div style="font-size:.75rem;color:rgba(255,255,255,0.2);">MSME Registered · GST: 09XXXXX1234X</div></div>
+    <div class="footer-col"><h4>Shop</h4><ul><li><a href="#">GlowBot Buddy</a></li><li><a href="#">PixelFlame Lantern</a></li><li><a href="#">CactuStation</a></li><li><a href="#">Custom Order</a></li></ul></div>
+    <div class="footer-col"><h4>Info</h4><ul><li><a href="#">About</a></li><li><a href="#">How It's Made</a></li><li><a href="#">Shipping</a></li><li><a href="#">Returns</a></li></ul></div>
+    <div class="footer-col"><h4>Connect</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">WhatsApp</a></li><li><a href="#">Support</a></li><li><a href="#">Bulk Orders</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Future3D. All rights reserved.</span><span>Made with ❤️ in India</span></div>
+</footer>
+
+<!-- CHECKOUT PAGE -->
+<div class="checkout-page" id="checkoutPage">
+  <div class="checkout-nav">
+    <a href="#" onclick="closeCheckout();window.scrollTo({top:0,behavior:'smooth'});return false;" class="logo" style="text-decoration:none;cursor:pointer;">Future<span>3D</span></a>
+    <div class="checkout-steps">
+      <div class="step done"><div class="step-num">✓</div> Cart</div><div class="step-div"></div>
+      <div class="step active"><div class="step-num">2</div> Details</div><div class="step-div"></div>
+      <div class="step"><div class="step-num">3</div> Payment</div><div class="step-div"></div>
+      <div class="step"><div class="step-num">4</div> Confirm</div>
+    </div>
+    <button onclick="closeCheckout()" style="background:rgba(255,255,255,0.08);border:1px solid var(--bdr2);padding:8px 18px;border-radius:50px;cursor:pointer;font-size:.83rem;font-weight:600;color:var(--text2);">← Back to Shop</button>
+  </div>
+  <div class="checkout-body">
+    <div class="checkout-form-section">
+      <h3>Delivery Details</h3>
+      <div class="form-row"><div class="form-group"><label>First Name</label><input placeholder="Rahul" required/></div><div class="form-group"><label>Last Name</label><input placeholder="Sharma" required/></div></div>
+      <div class="form-row full"><div class="form-group"><label>Email</label><input type="email" placeholder="rahul@example.com" required/></div></div>
+      <div class="form-row full" id="phoneRow"><div class="form-group"><label>Phone Number <span style="color:var(--orange);">*</span></label>
+          <div style="display:flex;gap:10px;">
+            <input type="tel" id="phoneInput" placeholder="+91 98765 43210" maxlength="13" style="flex:1;" oninput="resetOTP()"/>
+            <button type="button" onclick="sendOTP()" id="sendOtpBtn" style="background:var(--orange);color:#fff;border:none;padding:0 18px;border-radius:10px;font-weight:700;font-size:.83rem;cursor:pointer;white-space:nowrap;">Send OTP</button>
+          </div>
+        </div></div>
+        <div class="form-row full" id="otpRow" style="display:none;"><div class="form-group">
+          <label>Enter OTP <span style="color:var(--text3);font-weight:400;font-size:.75rem;">(sent to your phone)</span></label>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="number" id="otpInput" placeholder="6-digit OTP" maxlength="6" style="flex:1;letter-spacing:4px;font-size:1.1rem;font-weight:700;"/>
+            <button type="button" onclick="verifyOTP()" style="background:var(--navy3);color:#fff;border:none;padding:0 18px;border-radius:10px;font-weight:700;font-size:.83rem;cursor:pointer;white-space:nowrap;">Verify</button>
+          </div>
+          <div id="otpStatus" style="margin-top:6px;font-size:.78rem;color:var(--text3);">Resend OTP in <span id="otpTimer">30</span>s</div>
+        </div></div>
+        <div id="otpVerified" style="display:none;padding:10px 14px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);border-radius:10px;color:#4ADE80;font-size:.83rem;font-weight:600;margin-bottom:14px;">✓ Phone number verified</div>
+      <div class="form-row full"><div class="form-group"><label>Address Line 1</label><input placeholder="Flat / House No., Building Name"/></div></div>
+      <div class="form-row full"><div class="form-group"><label>Address Line 2</label><input placeholder="Street, Area, Landmark (optional)"/></div></div>
+      <div class="form-row"><div class="form-group"><label>City</label><input placeholder="Delhi"/></div><div class="form-group"><label>State</label><select><option>Delhi</option><option>Maharashtra</option><option>Karnataka</option><option>Tamil Nadu</option><option>Uttar Pradesh</option><option>Other</option></select></div></div>
+      <div class="form-row"><div class="form-group"><label>PIN Code</label><input placeholder="110001"/></div><div class="form-group"><label>Country</label><input value="India" readonly style="opacity:.5;"/></div></div>
+      <h3 style="margin:28px 0 18px;">Payment Method</h3>
+      <div class="payment-methods" id="paymentMethods">
+        <div class="pay-option selected" onclick="selectPay(this,'upi')">
+          <div class="pay-radio"></div>
+          <div><div class="pay-label">UPI / GPay / PhonePe</div><div class="pay-sub">Instant · zero fees</div>
+          <div class="upi-row"><div class="upi-app sel">GPay</div><div class="upi-app">PhonePe</div><div class="upi-app">Paytm</div><div class="upi-app">BHIM</div></div></div>
+          <div class="pay-icons"><div class="pay-icon">UPI</div></div>
+        </div>
+        <div class="pay-option" onclick="selectPay(this,'card')">
+          <div class="pay-radio"></div>
+          <div><div class="pay-label">Credit / Debit Card</div><div class="pay-sub">Visa · Mastercard · RuPay</div></div>
+          <div class="pay-icons"><div class="pay-icon">VISA</div><div class="pay-icon">MC</div><div class="pay-icon" style="background:var(--orange);color:#fff;">RP</div></div>
+        </div>
+        <div class="pay-option" onclick="selectPay(this,'cod')">
+          <div class="pay-radio"></div>
+          <div><div class="pay-label">Cash on Delivery</div><div class="pay-sub">Pay on arrival (₹49 COD fee)</div></div>
+          <div class="pay-icons"><div class="pay-icon">COD</div></div>
+        </div>
+      </div>
+      <div id="cardFields" style="display:none;">
+        <div class="form-row full"><div class="form-group"><label>Card Number</label><input placeholder="1234 5678 9012 3456"/></div></div>
+        <div class="form-row"><div class="form-group"><label>Expiry</label><input placeholder="MM/YY"/></div><div class="form-group"><label>CVV</label><input placeholder="•••"/></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="order-summary-box">
+        <h3>Order Summary</h3>
+        <div id="checkoutItemsEl"></div>
+        <hr class="order-divider"/>
+        <div class="order-line"><span>Subtotal (MRP)</span><span id="co-subtotal">₹0</span></div>
+        <div class="order-line green"><span>🎉 Discount</span><span id="co-discount">−₹0</span></div>
+        <div class="order-line"><span>Shipping</span><span id="co-shipping">FREE</span></div>
+        <div class="order-line"><span>GST (18%)</span><span id="co-gst">₹0</span></div>
+        <hr class="order-divider"/>
+        <div class="order-line total"><span>Total Payable</span><span id="co-total">₹0</span></div>
+        <button class="place-order-btn" onclick="placeOrderSmart()">🔒 Place Order Securely</button>
+        <div class="secure-badge">🔒 SSL Encrypted · Powered by Razorpay</div>
+        <div style="display:flex;justify-content:center;gap:6px;margin-top:10px;flex-wrap:wrap;">
+          <span style="font-size:.7rem;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text3);">UPI</span>
+          <span style="font-size:.7rem;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text3);">VISA</span>
+          <span style="font-size:.7rem;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text3);">Mastercard</span>
+          <span style="font-size:.7rem;padding:2px 8px;border-radius:4px;background:var(--orange);color:#fff;">RuPay</span>
+          <span style="font-size:.7rem;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--text3);">COD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🎉</div>
+    <h2>Order Placed!</h2>
+    <p>Your Future3D order is confirmed.<br/>WhatsApp + email confirmation on the way.<br/><br/><strong>Estimated delivery: 3–5 business days</strong></p>
+    <button class="success-btn" onclick="resetAll()">Continue Shopping →</button>
+  </div>
+</div>
+
+<script>
+// ── PRODUCT DATA ──
+const PRODUCTS = {
+  lamp: {
+    name: 'GlowBot Buddy™', cat: '3D Character Lamp', price: 899, mrp: 1299,
+    desc: 'Cute seated buddy lamp — warm PLA+ finish, warm LED amber glow. Perfect for desk, bedside, or shelf.',
+    specs: [['Material','PLA+'],['Size','~12×12×16 cm'],['Light','LED Warm'],['Print Time','~10 hrs'],['Finish','Matte'],['Ships In','3–5 days']],
+    imgs: ['<img src="lamp_1.jpg"" style="width:100%;height:100%;object-fit:cover;object-position:center 65%;border-radius:8px;" alt="GlowBot Buddy"/>'],
+    vid: 'lamp.mp4'
+  },
+  lantern: {
+    name: 'PixelFlame Lantern™', cat: '3D Pixel Lantern', price: 1199, mrp: 1599,
+    desc: 'Minecraft-inspired voxel cube lantern. Dark frame, pixel grid panels, molten amber LED glow. Gaming room staple.',
+    specs: [['Material','PLA+ & TPU'],['Size','~14×14×18 cm'],['Light','LED Amber'],['Frame','Dark'],['Print Time','~12 hrs'],['Ships In','3–5 days']],
+    imgs: ['<img src="lantern_1.jpg"" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;border-radius:8px;" alt="PixelFlame Lantern"/>'],
+    vid: 'lantern.mp4'
+  },
+  cactus: {
+    name: 'CactuStation™', cat: '3D Desk Organizer', price: 1099, mrp: 1499,
+    desc: 'All-in-one ribbed cactus desk hub — headphone hook, smartwatch stand, and AirPods tray. Forest green + sandy base.',
+    specs: [['Material','PLA+'],['Size','~18×12×22 cm'],['Color','Forest Green'],['Base','Sandy White'],['Print Time','~14 hrs'],['Ships In','3–5 days']],
+    imgs: ['<img src="cactus_1.jpg"" style="width:100%;height:100%;object-fit:cover;object-position:center 30%;border-radius:8px;" alt="CactuStation"/>'],
+    vid: 'cactus.mp4'
+  }
+};
+
+// ── CART STATE ──
+let cart = {};
+
+function updateCartUI() {
+  const total = Object.entries(cart).reduce((s,[id,q])=>s+(PRODUCTS[id].price*q),0);
+  const count = Object.values(cart).reduce((s,q)=>s+q,0);
+  document.getElementById('cartCount').textContent = count;
+  let html = '';
+  for (const [id,qty] of Object.entries(cart)) {
+    if(!qty) continue;
+    const p = PRODUCTS[id];
+    html += `<div class="cart-item">
+      <div class="cart-item-img"><div style="width:60px;height:60px;overflow:hidden;border-radius:8px;">${p.imgs[0]}</div></div>
+      <div style="flex:1;"><div class="cart-item-name">${p.name}</div><div class="cart-item-price">₹${p.price.toLocaleString('en-IN')}</div><div class="cart-item-qty">Qty: ${qty}</div></div>
+    </div>`;
+  }
+  if (!html) html = '<p style="text-align:center;color:var(--text3);font-size:.88rem;padding:40px 16px;">Cart is empty.<br/>Add something beautiful ✨</p>';
+  document.getElementById('cartItemsEl').innerHTML = html;
+  document.getElementById('cartTotalEl').textContent = '₹' + total.toLocaleString('en-IN');
+}
+
+function addToCart(e, id) {
+  e.stopPropagation();
+  if (!cart[id]) cart[id] = 0;
+  cart[id]++;
+  updateCartUI();
+  const btn = e.currentTarget;
+  btn.textContent = '✓ Added!';
+  setTimeout(()=>btn.textContent='Add to Cart', 1200);
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartSidebar').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartSidebar').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── MODAL ──
+let currentModal = null;
+
+function openModal(id) {
+  currentModal = id;
+  const p = PRODUCTS[id];
+  const overlay = document.getElementById('modalOverlay');
+  const left = document.getElementById('modalLeft');
+  const right = document.getElementById('modalRight');
+  const tabs = document.getElementById('modalTabs');
+
+  // Reset tabs
+  tabs.innerHTML = `<button class="modal-tab active" onclick="switchModalTab('img',this)">Photos</button>
+    <button class="modal-tab" onclick="switchModalTab('vid',this)">▶ Making Of</button>`;
+
+  // Main image area
+  document.getElementById('modalMainImg').innerHTML = p.imgs[0];
+
+  // Modal video (hidden by default)
+  const vid = document.getElementById('modalMainImg');
+  if (!document.getElementById('modalMainVideo')) {
+    const v = document.createElement('video');
+    v.id = 'modalMainVideo'; v.muted = true; v.loop = true; v.playsInline = true;
+    v.className = 'modal-main-video'; v.style.display = 'none';
+    document.getElementById('modalMainImg').appendChild(v);
+  }
+  const modalVid = document.getElementById('modalMainVideo');
+  modalVid.src = p.vid; modalVid.style.display = 'none';
+
+  // Thumbs
+  document.getElementById('modalThumbs').innerHTML = p.imgs.map((img,i)=>
+    `<div class="modal-thumb ${i===0?'active':''}" onclick="switchModalImg(${i})">${img}</div>`
+  ).join('');
+
+  // Right panel
+  right.innerHTML = `
+    <div class="modal-cat">${p.cat}</div>
+    <div class="modal-name">${p.name}</div>
+    <div class="modal-stars">★★★★★ <span style="color:var(--text2);font-size:.8rem;">(47 reviews)</span></div>
+    <div class="modal-price-row"><span class="modal-price">₹${p.price.toLocaleString('en-IN')}</span><span class="modal-mrp">₹${p.mrp.toLocaleString('en-IN')}</span><span class="modal-save">Save ₹${(p.mrp-p.price).toLocaleString('en-IN')}</span></div>
+    <div class="modal-desc">${p.desc}</div>
+    <div class="modal-specs">${p.specs.map(([l,v])=>`<div class="spec-item"><div class="spec-label">${l}</div><div class="spec-val">${v}</div></div>`).join('')}</div>
+    <div class="qty-row"><div class="qty-ctrl"><button class="qty-btn" onclick="changeQty(-1)">−</button><div class="qty-num" id="modalQty">1</div><button class="qty-btn" onclick="changeQty(1)">+</button></div><button class="modal-add-cart" onclick="addToCartModal('${id}')">Add to Cart →</button><button class="modal-wishlist">♡</button></div>
+  `;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function switchModalTab(type, btn) {
+  document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const mainImg = document.getElementById('modalMainImg');
+  const vid = document.getElementById('modalMainVideo');
+  if (type === 'vid') {
+    if (vid) { vid.style.display = 'block'; vid.play(); }
+  } else {
+    if (vid) { vid.style.display = 'none'; vid.pause(); }
+  }
+}
+
+function switchModalImg(i) {
+  const p = PRODUCTS[currentModal];
+  document.getElementById('modalMainImg').innerHTML = p.imgs[i];
+  if (document.getElementById('modalMainVideo')) document.getElementById('modalMainImg').appendChild(document.getElementById('modalMainVideo'));
+  document.querySelectorAll('.modal-thumb').forEach((t,j) => t.classList.toggle('active', j===i));
+}
+
+function changeQty(d) {
+  const el = document.getElementById('modalQty');
+  let q = parseInt(el.textContent) + d;
+  if (q<1) q=1; if(q>10) q=10;
+  el.textContent = q;
+}
+
+function addToCartModal(id) {
+  const qty = parseInt(document.getElementById('modalQty').textContent);
+  if (!cart[id]) cart[id]=0;
+  cart[id]+=qty;
+  updateCartUI();
+  closeModal();
+  setTimeout(openCart, 300);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+// ── CHECKOUT ──
+function openCheckout() {
+  closeCart();
+  const el = document.getElementById('checkoutItemsEl');
+  let html='', sub=0, disc=0;
+  for (const [id,qty] of Object.entries(cart)) {
+    if(!qty) continue;
+    const p=PRODUCTS[id];
+    sub+=p.mrp*qty; disc+=(p.mrp-p.price)*qty;
+    html+=`<div class="order-item">
+      <div class="order-item-img" style="overflow:hidden;">${p.imgs[0]}</div>
+      <div class="order-item-info"><div class="order-item-name">${p.name}</div><div class="order-item-var">Qty: ${qty}</div></div>
+      <div class="order-item-price">₹${(p.price*qty).toLocaleString('en-IN')}</div>
+    </div>`;
+  }
+  el.innerHTML=html;
+  const payable=sub-disc;
+  const gst=Math.round(payable*0.18);
+  const ship=payable>=999?0:79;
+  document.getElementById('co-subtotal').textContent='₹'+sub.toLocaleString('en-IN');
+  document.getElementById('co-discount').textContent='−₹'+disc.toLocaleString('en-IN');
+  document.getElementById('co-shipping').textContent=ship===0?'FREE 🎉':'₹'+ship;
+  document.getElementById('co-gst').textContent='₹'+gst.toLocaleString('en-IN');
+  document.getElementById('co-total').textContent='₹'+(payable+gst+ship).toLocaleString('en-IN');
+  document.getElementById('checkoutPage').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeCheckout() { document.getElementById('checkoutPage').classList.remove('open'); document.body.style.overflow=''; }
+
+function selectPay(el,type) {
+  document.querySelectorAll('.pay-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cardFields').style.display=(type==='card')?'block':'none';
+}
+
+function placeOrder() { document.getElementById('checkoutPage').classList.remove('open'); document.getElementById('successOverlay').classList.add('open'); }
+function resetAll() { cart={}; updateCartUI(); document.getElementById('successOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+// ── HERO CANVAS ──
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+
+  function resize(){ W=canvas.width=canvas.offsetWidth; H=canvas.height=canvas.offsetHeight; }
+
+  const shapes=[], particles=[];
+
+  class Shape {
+    constructor(){
+      this.x=Math.random()*1.2-0.1; this.y=Math.random()*1.2-0.1;
+      this.rx=Math.random()*Math.PI*2; this.ry=Math.random()*Math.PI*2;
+      this.drx=(Math.random()-0.5)*0.007; this.dry=(Math.random()-0.5)*0.006;
+      this.size=Math.random()*70+35;
+      this.alpha=Math.random()*0.35+0.18;
+      this.col=Math.random()>0.5?'255,107,43':'37,78,143';
+    }
+    verts(){
+      const sx=this.x*W, sy=this.y*H, s=this.size;
+      const cos=Math.cos,sin=Math.sin;
+      const crx=cos(this.rx),srx=sin(this.rx),cry=cos(this.ry),sry=sin(this.ry);
+      return [[1,1,1],[-1,1,1],[1,-1,1],[-1,-1,1],[1,1,-1],[-1,1,-1],[1,-1,-1],[-1,-1,-1]].map(([x,y,z])=>{
+        let y2=y*crx-z*srx,z2=y*srx+z*crx;
+        let x3=x*cry+z2*sry;
+        return [sx+x3*s,sy+y2*s];
+      });
+    }
+    draw(){
+      this.rx+=this.drx; this.ry+=this.dry;
+      const v=this.verts();
+      ctx.strokeStyle=`rgba(${this.col},${this.alpha})`;
+      ctx.lineWidth=1.5;
+      [[0,1],[2,3],[4,5],[6,7],[0,2],[1,3],[4,6],[5,7],[0,4],[1,5],[2,6],[3,7]].forEach(([a,b])=>{
+        ctx.beginPath(); ctx.moveTo(v[a][0],v[a][1]); ctx.lineTo(v[b][0],v[b][1]); ctx.stroke();
+      });
+    }
+  }
+
+  class Particle {
+    constructor(){ this.reset(); }
+    reset(){
+      this.x=Math.random()*W; this.y=Math.random()*H;
+      this.vx=(Math.random()-0.5)*0.35; this.vy=(Math.random()-0.5)*0.35;
+      this.r=Math.random()*2+0.5;
+      this.alpha=Math.random()*0.3+0.1;
+      this.col=Math.random()>0.55?'255,107,43':'37,78,143';
+    }
+    update(){
+      this.x+=this.vx; this.y+=this.vy;
+      if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
+    }
+    draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.r,0,Math.PI*2); ctx.fillStyle=`rgba(${this.col},${this.alpha})`; ctx.fill(); }
+  }
+
+  resize();
+  for(let i=0;i<22;i++) shapes.push(new Shape());
+  for(let i=0;i<90;i++) particles.push(new Particle());
+
+  function drawConnections(){
+    for(let i=0;i<particles.length;i++)
+      for(let j=i+1;j<particles.length;j++){
+        const dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<110){
+          ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y); ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle=`rgba(37,78,143,${0.22*(1-d/110)})`;
+          ctx.lineWidth=0.5; ctx.stroke();
+        }
+      }
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,W,H);
+    shapes.forEach(s=>s.draw());
+    particles.forEach(p=>{ p.update(); p.draw(); });
+    drawConnections();
+    requestAnimationFrame(animate);
+  }
+  animate();
+  window.addEventListener('resize',resize);
+})();
+
+// ── SCROLL REVEAL ──
+const revealObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('visible');revealObs.unobserve(e.target);}
+}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
+
+// ── CARD 3D TILT ──
+document.querySelectorAll('.card-tilt').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width-0.5)*14;
+    const y=((e.clientY-r.top)/r.height-0.5)*-14;
+    card.style.transform=`perspective(800px) rotateX(${y}deg) rotateY(${x}deg) translateY(-8px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+// ── NAV SHRINK ──
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('shrink',window.scrollY>60);
+});
+
+// ── PROCESS VIDEO CLICK TO PLAY/PAUSE ──
+document.querySelectorAll('.process-video-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    const vid=card.querySelector('video');
+    vid.paused?vid.play():vid.pause();
+  });
+});
+
+// ── UPI APP SELECT ──
+document.querySelectorAll('.upi-app').forEach(a=>{
+  a.addEventListener('click',function(){
+    document.querySelectorAll('.upi-app').forEach(x=>x.classList.remove('sel'));
+    this.classList.add('sel');
+  });
+});
+</script>
+
+<!-- RAZORPAY TEST MODE - Replace YOUR_KEY_HERE with your actual Razorpay key_id -->
+<script src="https://checkout.razorpay.com/v1/checkout.js">
+// ── PRODUCT GALLERY ──
+var galleryState = {
+  lamp: 0, cactus: 0, lantern: 0
+};
+function switchGallery(product, idx) {
+  var wrap = document.getElementById('gallery-' + product);
+  if (!wrap) return;
+  var imgs = wrap.querySelectorAll('.gallery-img');
+  var dots = wrap.querySelectorAll('.img-dot');
+  imgs.forEach(function(img, i) { img.style.display = i === idx ? 'block' : 'none'; });
+  dots.forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  galleryState[product] = idx;
+}
+function galleryCycle(product, dir) {
+  var wrap = document.getElementById('gallery-' + product);
+  if (!wrap) return;
+  var imgs = wrap.querySelectorAll('.gallery-img');
+  var validCount = imgs.length;
+  var cur = galleryState[product] || 0;
+  var next = (cur + dir + validCount) % validCount;
+  switchGallery(product, next);
+}
+
+// ── OTP FLOW ──
+var otpTimerInterval = null;
+var otpVerifiedFlag = false;
+
+function resetOTP() {
+  otpVerifiedFlag = false;
+  document.getElementById('otpRow').style.display = 'none';
+  document.getElementById('otpVerified').style.display = 'none';
+  document.getElementById('sendOtpBtn').disabled = false;
+  document.getElementById('sendOtpBtn').textContent = 'Send OTP';
+}
+
+function sendOTP() {
+  var phone = document.getElementById('phoneInput').value.replace(/\D/g,'');
+  if (phone.length < 10) { alert('Please enter a valid 10-digit phone number.'); return; }
+  // In production: call your backend → MSG91/Fast2SMS API here
+  document.getElementById('otpRow').style.display = '';
+  document.getElementById('sendOtpBtn').disabled = true;
+  document.getElementById('sendOtpBtn').textContent = 'Resend';
+  // Start 30s countdown
+  if (otpTimerInterval) clearInterval(otpTimerInterval);
+  var t = 30;
+  document.getElementById('otpTimer').textContent = t;
+  document.getElementById('otpStatus').style.display = '';
+  otpTimerInterval = setInterval(function() {
+    t--;
+    document.getElementById('otpTimer').textContent = t;
+    if (t <= 0) {
+      clearInterval(otpTimerInterval);
+      document.getElementById('sendOtpBtn').disabled = false;
+      document.getElementById('otpStatus').style.display = 'none';
+    }
+  }, 1000);
+  // DEMO: alert the fake OTP
+  setTimeout(function() {
+    var fakeOtp = '123456';
+    alert('📱 DEMO MODE: Your OTP is ' + fakeOtp + '\n(In production, this will be sent via SMS to your phone)');
+  }, 500);
+}
+
+function verifyOTP() {
+  var entered = document.getElementById('otpInput').value;
+  // DEMO: accept 123456. In production: verify via your backend
+  if (entered === '123456') {
+    otpVerifiedFlag = true;
+    document.getElementById('otpRow').style.display = 'none';
+    document.getElementById('otpVerified').style.display = '';
+    if (otpTimerInterval) clearInterval(otpTimerInterval);
+    // Track verification
+    if(typeof trackEvent!=='undefined') trackEvent('otp_verified');
+  } else {
+    alert('❌ Incorrect OTP. Please try again. (Demo OTP is 123456)');
+  }
+}
+
+// ── RAZORPAY PAYMENT LAUNCH ──
+function launchRazorpay(amount, orderId) {
+  // Replace YOUR_KEY_ID with your actual Razorpay Key ID from dashboard
+  var options = {
+    key: 'YOUR_KEY_ID',  // e.g. rzp_test_XXXXX (test) or rzp_live_XXXXX (live)
+    amount: amount * 100, // in paise
+    currency: 'INR',
+    name: 'Future3D',
+    description: 'Handcrafted 3D Printed Products',
+    image: 'cactus_1.jpg',
+    order_id: orderId,    // Generated by your backend via Razorpay Orders API
+    handler: function(response) {
+      // Payment success — verify on backend, then show success screen
+      console.log('Payment ID:', response.razorpay_payment_id);
+      if(typeof trackEvent!=='undefined') trackEvent('purchase', {value: amount, currency: 'INR'});
+      placeOrder();
+    },
+    prefill: {
+      name: (document.getElementById('firstNameInput') || {}).value || '',
+      contact: document.getElementById('phoneInput').value
+    },
+    theme: { color: '#FF6B2B' }
+  };
+  try {
+    var rzp = new Razorpay(options);
+    rzp.open();
+  } catch(e) {
+    alert('Razorpay not available in demo mode. In production, add your Razorpay key to enable payments.');
+    placeOrder(); // demo fallback
+  }
+}
+
+// ── ENHANCED PLACE ORDER (with validation + OTP check) ──
+function placeOrderSmart() {
+  // Validate required fields
+  var required = ['phoneInput'];
+  var missing = false;
+  required.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && !el.value.trim()) { el.style.borderColor='var(--orange)'; missing = true; }
+    else if (el) el.style.borderColor='';
+  });
+  if (missing) { alert('Please fill in all required fields.'); return; }
+
+  // Check OTP
+  if (!otpVerifiedFlag) { alert('Please verify your phone number with OTP before placing the order.'); return; }
+
+  // Calculate total from cart
+  var total = Object.values(cart).reduce(function(sum, item) { return sum + item.price * item.qty; }, 0);
+  var shipping = total > 0 ? 99 : 0;
+  var finalAmount = total + shipping;
+
+  // Track checkout initiation
+  if(typeof trackEvent!=='undefined') trackEvent('begin_checkout', {value: finalAmount, currency: 'INR'});
+
+  // Launch Razorpay (pass null orderId for demo — in production, create order via backend first)
+  launchRazorpay(finalAmount, null);
+}
+
+// ── ANALYTICS EVENT TRACKING ──
+// Track product views
+document.querySelectorAll('.prod-card').forEach(function(card) {
+  card.addEventListener('click', function() {
+    var productName = (card.querySelector('.prod-name') || {}).textContent || 'unknown';
+    if(typeof trackEvent!=='undefined') trackEvent('view_item', {item_name: productName});
+  });
+});
+
+// Track add to cart
+document.querySelectorAll('.add-cart').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var card = btn.closest('.prod-card');
+    var productName = card ? (card.querySelector('.prod-name') || {}).textContent : 'unknown';
+    if(typeof trackEvent!=='undefined') trackEvent('add_to_cart', {item_name: productName});
+  });
+});
+
+// Track scroll depth
+var scrollDepthTracked = {};
+window.addEventListener('scroll', function() {
+  var scrollPct = Math.round((window.scrollY + window.innerHeight) / document.body.scrollHeight * 100);
+  [25,50,75,90].forEach(function(pct) {
+    if (scrollPct >= pct && !scrollDepthTracked[pct]) {
+      scrollDepthTracked[pct] = true;
+      if(typeof trackEvent!=='undefined') trackEvent('scroll_depth', {percent: pct});
+    }
+  });
+});
+
+</script>
+</body>

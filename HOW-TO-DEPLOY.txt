@@ -1,0 +1,104 @@
+========================================
+  FUTURE3D — VERCEL DEPLOYMENT GUIDE
+========================================
+
+WHAT'S IN THIS FOLDER
+----------------------
+index.html       → Your complete website
+vercel.json      → Vercel configuration (don't touch)
+lamp_1.jpg       → GlowBot Lamp — Angle 1 (real photo)
+lamp_2.jpg       → Placeholder — REPLACE with your angle 2 photo
+lamp_3.jpg       → Placeholder — REPLACE with your angle 3 photo
+lamp_4.jpg       → Placeholder — REPLACE with your angle 4 photo
+lamp_5.jpg       → Placeholder — REPLACE with your angle 5 photo
+cactus_1.jpg     → Cactus Organizer — Angle 1 (real photo)
+cactus_2.jpg     → Placeholder — REPLACE with your angle 2 photo
+cactus_3.jpg     → Placeholder — REPLACE with your angle 3 photo
+lantern_1.jpg    → Minecraft Lantern — Angle 1 (real photo)
+lantern_2.jpg    → Placeholder — REPLACE with your angle 2 photo
+lantern_3.jpg    → Placeholder — REPLACE with your angle 3 photo
+lamp.mp4         → Product video — GlowBot
+cactus.mp4       → Product video — Cactus Organizer
+lantern.mp4      → Product video — Minecraft Lantern
+
+
+BEFORE YOU UPLOAD
+-----------------
+1. Replace placeholder images with your real product photos
+   (just save your photo with the same filename, e.g. lamp_2.jpg)
+
+2. Open index.html in a text editor and replace these 3 placeholders:
+   - G-XXXXXXXXXX  → your Google Analytics Measurement ID (get from analytics.google.com)
+   - CLARITY_ID    → your Microsoft Clarity Project ID (get from clarity.microsoft.com)
+   - YOUR_KEY_ID   → your Razorpay key_id (get from razorpay.com after KYC)
+
+
+DEPLOYING ON VERCEL (3 steps)
+------------------------------
+
+OPTION A — Drag & Drop (easiest, no account needed to start):
+1. Go to vercel.com
+2. Click "Start Deploying"
+3. Drag this entire "future3d-vercel" folder onto the page
+4. Your site is live in ~30 seconds at a URL like future3d.vercel.app
+
+OPTION B — Connect GitHub (best for ongoing updates):
+1. Create a free account at github.com
+2. Create a new repository called "future3d-website"
+3. Upload all files in this folder to that repository
+4. Go to vercel.com → "Add New Project" → Import from GitHub
+5. Select your repository → click Deploy
+6. Every time you update a file on GitHub, Vercel auto-redeploys
+
+CUSTOM DOMAIN (optional):
+1. Buy a domain e.g. "future3d.in" from GoDaddy or BigRock (~₹800/year)
+2. In Vercel dashboard → your project → Settings → Domains
+3. Add your domain → follow the DNS instructions shown
+4. Site is live at your own domain within a few minutes
+
+
+AFTER GOING LIVE — SET UP ANALYTICS
+-------------------------------------
+
+Google Analytics 4 (free):
+1. Go to analytics.google.com
+2. Create Account → Property → Web → enter your Vercel URL
+3. Copy the Measurement ID (G-XXXXXXXXXX)
+4. Open index.html → Find & Replace "G-XXXXXXXXXX" with your ID
+5. Re-upload index.html to Vercel
+
+Microsoft Clarity (free — session recordings, scroll maps):
+1. Go to clarity.microsoft.com
+2. New Project → enter your Vercel URL
+3. Copy the Project ID
+4. Open index.html → Find & Replace "CLARITY_ID" with your ID
+5. Re-upload index.html to Vercel
+
+
+AFTER GOING LIVE — ENABLE REAL PAYMENTS
+-----------------------------------------
+
+1. Sign up at razorpay.com → complete KYC (PAN + bank details)
+2. Approval takes 1-3 business days
+3. Dashboard → Settings → API Keys → Generate Test Key
+4. Open index.html → Find "YOUR_KEY_ID" → replace with rzp_test_XXXX
+5. Test payments using card: 4111 1111 1111 1111
+6. When ready for live payments: generate Live Key → replace with rzp_live_XXXX
+
+
+UPDATING YOUR WEBSITE AFTER LAUNCH
+------------------------------------
+If using Drag & Drop (Option A):
+  → Go to vercel.com → your project → Deployments → Upload new files
+
+If using GitHub (Option B):
+  → Update the file on GitHub → Vercel auto-redeploys in ~30 seconds
+
+
+NEED HELP?
+-----------
+Vercel documentation: vercel.com/docs
+Razorpay documentation: razorpay.com/docs
+Google Analytics setup: support.google.com/analytics
+
+========================================
